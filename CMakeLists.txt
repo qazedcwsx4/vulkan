@@ -36,15 +36,12 @@ endif ()
 add_definitions(-DVK_NO_PROTOTYPES)
 add_definitions(-DVK_USE_PLATFORM_${VK_USE_PLATFORM}_KHR)
 
-
 file(GLOB EXTERNAL_HEADER_FILES "External/*.h")
 source_group("External" FILES ${EXTERNAL_HEADER_FILES})
 
-file(GLOB HEADER_FILES "src/*.h" "src/*.inl")
-file(GLOB SOURCE_FILES "src/*.cpp")
-source_group("Header Files" FILES ${HEADER_FILES})
-source_group("Source Files" FILES ${SOURCE_FILES})
+file(GLOB_RECURSE HEADER_FILES "src/*.h" "src/*.inl")
+file(GLOB_RECURSE SOURCE_FILES "src/*.cpp")
 
-add_executable(vulkan ${EXTERNAL_HEADER_FILES} ${HEADER_FILES} ${SOURCE_FILES})
+add_executable(vulkan ${EXTERNAL_HEADER_FILES} ${HEADER_FILES} ${SOURCE_FILES} src/vulkan/VulkanInstance.cpp src/vulkan/VulkanInstance.h)
 target_link_libraries(vulkan ${PLATFORM_LIBRARY})
 target_include_directories(vulkan PUBLIC "External")

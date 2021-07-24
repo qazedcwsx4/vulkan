@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vulkan.h>
 #include "vector"
+#include "vulkan/VulkanLibrary.h"
 #include "VulkanFunctions.h"
 
 namespace VulkanCookbook {
@@ -11,54 +12,6 @@ namespace VulkanCookbook {
     };
 
 #define LIBRARY_TYPE HMODULE
-
-    bool ConnectWithVulkanLoaderLibrary(HMODULE &vulkan_library) {
-#if defined _WIN32
-        vulkan_library = LoadLibrary("vulkan-1.dll");
-#elif defined __linux
-        vulkan_library = dlopen( "libvulkan.so.1", RTLD_NOW );
-#endif
-
-        if (vulkan_library == nullptr) {
-            std::cout << "Could not connect with a Vulkan Runtime library." << std::endl;
-            return false;
-        }
-        return true;
-    }
-
-    bool LoadFunctionExportedFromVulkanLoaderLibrary(LIBRARY_TYPE const &vulkan_library) {
-#if defined _WIN32
-#define LoadFunction GetProcAddress
-#elif defined __linux
-#define LoadFunction dlsym
-#endif
-
-#define EXPORTED_VULKAN_FUNCTION(name)                              \
-    name = (PFN_##name)LoadFunction( vulkan_library, #name );         \
-    if( name == nullptr ) {                                           \
-      std::cout << "Could not load exported Vulkan function named: "  \
-        #name << std::endl;                                           \
-      return false;                                                   \
-    }
-
-#include "ListOfVulkanFunctions.inl"
-
-        return true;
-    }
-
-    bool LoadGlobalLevelFunctions() {
-#define GLOBAL_LEVEL_VULKAN_FUNCTION(name)                              \
-    name = (PFN_##name)vkGetInstanceProcAddr( nullptr, #name );           \
-    if( name == nullptr ) {                                               \
-      std::cout << "Could not load global level Vulkan function named: "  \
-        #name << std::endl;                                               \
-      return false;                                                       \
-    }
-
-#include "ListOfVulkanFunctions.inl"
-
-        return true;
-    }
 
     bool CheckAvailableInstanceExtensions(std::vector<VkExtensionProperties> &available_extensions) {
         uint32_t extensions_count = 0;
@@ -434,17 +387,6 @@ namespace VulkanCookbook {
 using namespace VulkanCookbook;
 
 int main() {
-    LIBRARY_TYPE VulkanLibrary;
-    VkInstance Instance;
-    VkDevice device;
-    VkQueue queue1;
-    VkQueue queue2;
-    ConnectWithVulkanLoaderLibrary(VulkanLibrary);
-    LoadFunctionExportedFromVulkanLoaderLibrary(VulkanLibrary);
-    LoadGlobalLevelFunctions();
-    CreateVulkanInstance({}, "Vulkan Cookbook", Instance);
-    LoadInstanceLevelFunctions(Instance, {});
-    CreateLogicalDeviceWithGeometryShadersAndGraphicsAndComputeQueues(Instance, device, queue1, queue2);
-
+    auto xd = VulkanLibrary();
     std::cout << "uwu";
 }
