@@ -9,7 +9,10 @@
 
 #include <Windows.h>
 #include <vulkan.h>
-#include "../VulkanFunctions.h"
+#include "VulkanInstance.h"
+#include <vector>
+#include <string>
+
 namespace VulkanCookbook {
     class VulkanLibrary {
     private:
@@ -23,6 +26,8 @@ namespace VulkanCookbook {
         VulkanLibrary();
 
         ~VulkanLibrary();
+
+        VulkanInstance getInstance(const char *application_name, std::vector<char const *> const &desired_extensions);
     };
 }
 

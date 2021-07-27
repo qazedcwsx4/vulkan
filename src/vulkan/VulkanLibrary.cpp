@@ -4,6 +4,7 @@
 
 #include <exception>
 #include "VulkanLibrary.h"
+#include "../VulkanFunctions.h"
 
 namespace VulkanCookbook {
     VulkanLibrary::VulkanLibrary() {
@@ -43,8 +44,14 @@ namespace VulkanCookbook {
     void VulkanLibrary::loadGlobalFunctions() {
 #define GLOBAL_LEVEL_VULKAN_FUNCTION(name)                              \
     name = (PFN_##name)vkGetInstanceProcAddr( nullptr, #name );           \
-    if( name == nullptr ) throw std::exception("Could not load global level Vulkan function");
+    if(name == nullptr) throw std::exception("Could not load global level Vulkan function");
 
 #include "../ListOfVulkanFunctions.inl"
+    }
+
+    VulkanInstance VulkanLibrary::getInstance(
+            const char *application_name,
+            const std::vector<const char *> &desired_extensions) {
+        return VulkanInstance(application_name, desired_extensions);
     }
 }

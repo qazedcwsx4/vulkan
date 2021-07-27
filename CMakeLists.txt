@@ -42,6 +42,6 @@ source_group("External" FILES ${EXTERNAL_HEADER_FILES})
 file(GLOB_RECURSE HEADER_FILES "src/*.h" "src/*.inl")
 file(GLOB_RECURSE SOURCE_FILES "src/*.cpp")
 
-add_executable(vulkan ${EXTERNAL_HEADER_FILES} ${HEADER_FILES} ${SOURCE_FILES} src/vulkan/VulkanInstance.cpp src/vulkan/VulkanInstance.h)
+add_executable(vulkan ${EXTERNAL_HEADER_FILES} ${HEADER_FILES} ${SOURCE_FILES})
 target_link_libraries(vulkan ${PLATFORM_LIBRARY})
 target_include_directories(vulkan PUBLIC "External")
