@@ -84,12 +84,12 @@ typedef VkResult (VKAPI_PTR *PFN_vkGetMemoryWin32HandlePropertiesKHR)(VkDevice d
 
 #ifndef VK_NO_PROTOTYPES
 VKAPI_ATTR VkResult VKAPI_CALL vkGetMemoryWin32HandleKHR(
-    VkDevice                                    device,
+    VkDevice                                    physicalDevice,
     const VkMemoryGetWin32HandleInfoKHR*        pGetWin32HandleInfo,
     HANDLE*                                     pHandle);
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetMemoryWin32HandlePropertiesKHR(
-    VkDevice                                    device,
+    VkDevice                                    physicalDevice,
     VkExternalMemoryHandleTypeFlagBits          handleType,
     HANDLE                                      handle,
     VkMemoryWin32HandlePropertiesKHR*           pMemoryWin32HandleProperties);
@@ -155,11 +155,11 @@ typedef VkResult (VKAPI_PTR *PFN_vkGetSemaphoreWin32HandleKHR)(VkDevice device, 
 
 #ifndef VK_NO_PROTOTYPES
 VKAPI_ATTR VkResult VKAPI_CALL vkImportSemaphoreWin32HandleKHR(
-    VkDevice                                    device,
+    VkDevice                                    physicalDevice,
     const VkImportSemaphoreWin32HandleInfoKHR*  pImportSemaphoreWin32HandleInfo);
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetSemaphoreWin32HandleKHR(
-    VkDevice                                    device,
+    VkDevice                                    physicalDevice,
     const VkSemaphoreGetWin32HandleInfoKHR*     pGetWin32HandleInfo,
     HANDLE*                                     pHandle);
 #endif
@@ -198,11 +198,11 @@ typedef VkResult (VKAPI_PTR *PFN_vkGetFenceWin32HandleKHR)(VkDevice device, cons
 
 #ifndef VK_NO_PROTOTYPES
 VKAPI_ATTR VkResult VKAPI_CALL vkImportFenceWin32HandleKHR(
-    VkDevice                                    device,
+    VkDevice                                    physicalDevice,
     const VkImportFenceWin32HandleInfoKHR*      pImportFenceWin32HandleInfo);
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetFenceWin32HandleKHR(
-    VkDevice                                    device,
+    VkDevice                                    physicalDevice,
     const VkFenceGetWin32HandleInfoKHR*         pGetWin32HandleInfo,
     HANDLE*                                     pHandle);
 #endif
@@ -229,7 +229,7 @@ typedef VkResult (VKAPI_PTR *PFN_vkGetMemoryWin32HandleNV)(VkDevice device, VkDe
 
 #ifndef VK_NO_PROTOTYPES
 VKAPI_ATTR VkResult VKAPI_CALL vkGetMemoryWin32HandleNV(
-    VkDevice                                    device,
+    VkDevice                                    physicalDevice,
     VkDeviceMemory                              memory,
     VkExternalMemoryHandleTypeFlagsNV           handleType,
     HANDLE*                                     pHandle);
@@ -295,15 +295,15 @@ VKAPI_ATTR VkResult VKAPI_CALL vkGetPhysicalDeviceSurfacePresentModes2EXT(
     VkPresentModeKHR*                           pPresentModes);
 
 VKAPI_ATTR VkResult VKAPI_CALL vkAcquireFullScreenExclusiveModeEXT(
-    VkDevice                                    device,
+    VkDevice                                    physicalDevice,
     VkSwapchainKHR                              swapchain);
 
 VKAPI_ATTR VkResult VKAPI_CALL vkReleaseFullScreenExclusiveModeEXT(
-    VkDevice                                    device,
+    VkDevice                                    physicalDevice,
     VkSwapchainKHR                              swapchain);
 
 VKAPI_ATTR VkResult VKAPI_CALL vkGetDeviceGroupSurfacePresentModes2EXT(
-    VkDevice                                    device,
+    VkDevice                                    physicalDevice,
     const VkPhysicalDeviceSurfaceInfo2KHR*      pSurfaceInfo,
     VkDeviceGroupPresentModeFlagsKHR*           pModes);
 #endif

@@ -8,20 +8,30 @@
 
 #include <vulkan.h>
 #include <vector>
-#include "VulkanExtensions.h"
+#include "extensions/VulkanExtensions.h"
+#include "VulkanLogicalDevice.h"
+#include "extensions/VulkanInstanceExtensions.h"
 
 namespace VulkanCookbook {
     class VulkanInstance {
     private:
         VkInstance instance;
 
-        VulkanExtensions extensions;
+        VulkanInstanceExtensions extensions;
 
         VulkanInstance(const char *application_name, std::vector<char const *> const &desired_extensions);
 
         void loadInstanceFunctions();
+
+        std::vector<VkPhysicalDevice> enumeratePhysicalDevices();
+
+        static VkInstance
+        createInstance(const char *application_name, std::vector<char const *> const &desired_extensions);
+
     public:
         ~VulkanInstance();
+
+        VulkanLogicalDevice getLogicalDevice();
 
         friend class VulkanLibrary;
     };

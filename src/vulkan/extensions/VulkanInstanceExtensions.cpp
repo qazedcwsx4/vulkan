@@ -1,18 +1,16 @@
 //
-// Created by qaze on 26.07.2021.
+// Created by qaze on 31.07.2021.
 //
 
-#include "VulkanExtensions.h"
-#include <utility>
-#include <algorithm>
-#include "../VulkanFunctions.h"
+#include "VulkanInstanceExtensions.h"
+#include "../../VulkanFunctions.h"
 
 namespace VulkanCookbook {
-    VulkanExtensions::VulkanExtensions() {
+    VulkanInstanceExtensions::VulkanInstanceExtensions(VkInstance instance) : instance(instance) {
         availableExtensions = std::move(getInstanceExtensions());
     }
 
-    std::vector<VkExtensionProperties> VulkanExtensions::getInstanceExtensions() {
+    std::vector<VkExtensionProperties> VulkanInstanceExtensions::getInstanceExtensions() {
         uint32_t extensions_count = 0;
 
         VkResult result = vkEnumerateInstanceExtensionProperties(nullptr, &extensions_count, nullptr);
@@ -31,24 +29,7 @@ namespace VulkanCookbook {
         return extensions;
     }
 
-    bool VulkanExtensions::isExtensionSupported(const char *const extension) {
-        for (auto &available_extension : availableExtensions) {
-            if (strstr(available_extension.extensionName, extension)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    bool VulkanExtensions::areExtensionsSupported(const std::vector<const char *> &desired_extensions) {
-        for (auto extension: desired_extensions) {
-            if (!isExtensionSupported(extension)) return false;
-        }
-        return true;
-    }
-
-
-    void VulkanExtensions::loadExtensionFunctions(const std::vector<const char *> &enabledExtensions, VkInstance &instance) {
+    void VulkanInstanceExtensions::loadExtensionFunctions(const std::vector<const char *> &enabledExtensions) {
 #define INSTANCE_LEVEL_VULKAN_FUNCTION_FROM_EXTENSION(name, extension)              \
     for(auto & enabledExtension : enabledExtensions) {                              \
         if(std::string(enabledExtension) == std::string(extension)) {               \
@@ -59,6 +40,6 @@ namespace VulkanCookbook {
           }                                                                         \
         }
 
-#include "../ListOfVulkanFunctions.inl"
+#include "../../ListOfVulkanFunctions.inl"
     }
 }

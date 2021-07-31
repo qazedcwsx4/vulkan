@@ -11,21 +11,15 @@
 
 namespace VulkanCookbook {
     class VulkanExtensions {
-    private:
+    protected:
         std::vector<VkExtensionProperties> availableExtensions;
-
-        VulkanExtensions();
-
-        static std::vector<VkExtensionProperties> getInstanceExtensions();
-
-        void loadExtensionFunctions(const std::vector<const char *> &enabledExtensions, VkInstance &instance);
 
     public:
         bool isExtensionSupported(const char *extension);
 
         bool areExtensionsSupported(const std::vector<const char *> &desired_extensions);
 
-        friend class VulkanInstance;
+        virtual void loadExtensionFunctions(const std::vector<const char *> &enabledExtensions) = 0;
     };
 }
 
