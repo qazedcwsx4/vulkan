@@ -17,8 +17,8 @@ namespace VulkanCookbook {
         return false;
     }
 
-    bool VulkanExtensions::areExtensionsSupported(const std::vector<const char *> &desired_extensions) {
-        for (auto extension: desired_extensions) {
+    bool VulkanExtensions::areExtensionsSupported(const std::vector<const char *> &desiredExtensions) {
+        for (auto extension: desiredExtensions) {
             if (!isExtensionSupported(extension)) return false;
         }
         return true;

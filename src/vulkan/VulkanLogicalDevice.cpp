@@ -8,7 +8,7 @@
 
 namespace VulkanCookbook {
     VulkanLogicalDevice::VulkanLogicalDevice(std::vector<VkPhysicalDevice> &physicalDevices,
-                                             const std::vector<const char *> &desired_extensions) {
+                                             const std::vector<const char *> &desiredExtensions) {
         bool initialized = false;
         for (auto &physicalDevice : physicalDevices) {
             auto deviceFeatures = obtainDeviceFeatures(physicalDevice);
@@ -20,7 +20,7 @@ namespace VulkanCookbook {
             if (!device.has_value()) continue;
 
             VulkanDeviceExtensions extensions(physicalDevice, device.value());
-            if (!extensions.areExtensionsSupported(desired_extensions)) continue;
+            if (!extensions.areExtensionsSupported(desiredExtensions)) continue;
 
             VkDevice deviceValue = device.value();
             this->device = deviceValue;
@@ -32,7 +32,7 @@ namespace VulkanCookbook {
         if (!initialized) throw std::exception("Could not find suitable createdDevice");
 
         loadDeviceFunctions();
-        extensions.loadExtensionFunctions(desired_extensions);
+        extensions.loadExtensionFunctions(desiredExtensions);
     }
 
     std::optional<VkDevice> VulkanLogicalDevice::createLogicalDevice(VkPhysicalDevice physicalDevice,

@@ -27,7 +27,7 @@ namespace VulkanCookbook {
 
         ~VulkanLibrary();
 
-        VulkanInstance getInstance(const char *application_name, std::vector<char const *> const &desired_extensions);
+        VulkanInstance getInstance(const char *application_name, std::vector<char const *> const &desiredExtensions);
     };
 }
 

@@ -17,7 +17,7 @@ namespace VulkanCookbook {
     public:
         bool isExtensionSupported(const char *extension);
 
-        bool areExtensionsSupported(const std::vector<const char *> &desired_extensions);
+        bool areExtensionsSupported(const std::vector<const char *> &desiredExtensions);
 
         virtual void loadExtensionFunctions(const std::vector<const char *> &enabledExtensions) = 0;
     };

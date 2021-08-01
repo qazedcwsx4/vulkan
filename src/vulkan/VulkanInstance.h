@@ -19,19 +19,19 @@ namespace VulkanCookbook {
 
         VulkanInstanceExtensions extensions;
 
-        VulkanInstance(const char *application_name, std::vector<char const *> const &desired_extensions);
+        VulkanInstance(const char *applicationName, std::vector<char const *> const &desiredExtensions);
 
         void loadInstanceFunctions();
 
         std::vector<VkPhysicalDevice> enumeratePhysicalDevices();
 
         static VkInstance
-        createInstance(const char *application_name, std::vector<char const *> const &desired_extensions);
+        createInstance(const char *applicationName, std::vector<char const *> const &desiredExtensions);
 
     public:
         ~VulkanInstance();
 
-        VulkanLogicalDevice getLogicalDevice();
+        VulkanLogicalDevice getLogicalDevice(const std::vector<const char *> &desiredExtensions);
 
         friend class VulkanLibrary;
     };

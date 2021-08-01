@@ -23,7 +23,7 @@ namespace VulkanCookbook {
         VulkanDeviceExtensions extensions;
 
         explicit VulkanLogicalDevice(std::vector<VkPhysicalDevice> &physicalDevices,
-                                     std::vector<char const *> const &desired_extensions);
+                                     std::vector<char const *> const &desiredExtensions);
 
         static std::optional<std::map<QueueType, uint32_t>> obtainDeviceQueues(VkPhysicalDevice physicalDevice);
 

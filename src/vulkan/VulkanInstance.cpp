@@ -8,26 +8,26 @@
 
 namespace VulkanCookbook {
 
-    VulkanInstance::VulkanInstance(const char *application_name, std::vector<char const *> const &desired_extensions) :
-            instance(createInstance(application_name, desired_extensions)),
+    VulkanInstance::VulkanInstance(const char *applicationName, std::vector<char const *> const &desiredExtensions) :
+            instance(createInstance(applicationName, desiredExtensions)),
             extensions(VulkanInstanceExtensions(instance)) {
 
-        if (!extensions.areExtensionsSupported(desired_extensions)) {
+        if (!extensions.areExtensionsSupported(desiredExtensions)) {
             throw std::exception("Not all availableExtensions are supported");
         }
 
         loadInstanceFunctions();
-        extensions.loadExtensionFunctions(desired_extensions);
+        extensions.loadExtensionFunctions(desiredExtensions);
     }
 
     VkInstance
-    VulkanInstance::createInstance(const char *application_name, std::vector<char const *> const &desired_extensions) {
+    VulkanInstance::createInstance(const char *applicationName, std::vector<char const *> const &desiredExtensions) {
         VkInstance instance;
 
         VkApplicationInfo application_info = {
                 VK_STRUCTURE_TYPE_APPLICATION_INFO,
                 nullptr,
-                application_name,
+                applicationName,
                 VK_MAKE_VERSION(1, 0, 0),
                 "Vulkan Cookbook",
                 VK_MAKE_VERSION(1, 0, 0),
@@ -41,13 +41,13 @@ namespace VulkanCookbook {
                 &application_info,
                 0,
                 nullptr,
-                static_cast<uint32_t>(desired_extensions.size()),
-                desired_extensions.data()
+                static_cast<uint32_t>(desiredExtensions.size()),
+                desiredExtensions.data()
         };
 
         VkResult result = vkCreateInstance(&instance_create_info, nullptr, &instance);
         if (result != VK_SUCCESS || instance == VK_NULL_HANDLE) {
-            throw std::exception("Not all availableExtensions are supported");
+            throw std::exception("Was not able to create vulkan instance");
         }
 
         return instance;
@@ -70,9 +70,9 @@ namespace VulkanCookbook {
         }
     }
 
-    VulkanLogicalDevice VulkanInstance::getLogicalDevice() {
+    VulkanLogicalDevice VulkanInstance::getLogicalDevice(const std::vector<const char *> &desiredExtensions) {
         std::vector<VkPhysicalDevice> availableDevices = enumeratePhysicalDevices();
-        return VulkanLogicalDevice(availableDevices, {});
+        return VulkanLogicalDevice(availableDevices, desiredExtensions);
     }
 
     std::vector<VkPhysicalDevice> VulkanInstance::enumeratePhysicalDevices() {
