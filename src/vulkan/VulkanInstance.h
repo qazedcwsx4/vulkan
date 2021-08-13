@@ -11,6 +11,7 @@
 #include "extensions/VulkanExtensions.h"
 #include "VulkanLogicalDevice.h"
 #include "extensions/VulkanInstanceExtensions.h"
+#include "VulkanSurface.h"
 
 namespace VulkanCookbook {
     class VulkanInstance {
@@ -32,6 +33,8 @@ namespace VulkanCookbook {
         ~VulkanInstance();
 
         VulkanLogicalDevice getLogicalDevice(const std::vector<const char *> &desiredExtensions);
+
+        VulkanSurface getSurface();
 
         friend class VulkanLibrary;
     };

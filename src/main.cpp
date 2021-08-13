@@ -12,5 +12,9 @@ int main() {
     auto library = VulkanLibrary();
     auto instance = library.getInstance("XD", extensions);
     auto device = instance.getLogicalDevice({});
+    auto surface = instance.getSurface();
+
+    _sleep(10000);
+
     std::cout << "uwu";
 }

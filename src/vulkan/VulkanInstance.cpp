@@ -91,4 +91,8 @@ namespace VulkanCookbook {
         }
         return availableDevices;
     }
+
+    VulkanSurface VulkanInstance::getSurface() {
+        return VulkanSurface(instance);
+    }
 }
