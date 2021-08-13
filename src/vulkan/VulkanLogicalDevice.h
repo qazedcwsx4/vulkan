@@ -23,9 +23,11 @@ namespace VulkanCookbook {
         VulkanDeviceExtensions extensions;
 
         explicit VulkanLogicalDevice(std::vector<VkPhysicalDevice> &physicalDevices,
-                                     std::vector<char const *> const &desiredExtensions);
+                                     std::vector<char const *> const &desiredExtensions,
+                                     VkSurfaceKHR surface);
 
-        static std::optional<std::map<QueueType, uint32_t>> obtainDeviceQueues(VkPhysicalDevice physicalDevice);
+        static std::optional<std::map<QueueType, uint32_t>>
+        obtainDeviceQueues(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface);
 
         static std::optional<VkPhysicalDeviceFeatures> obtainDeviceFeatures(VkPhysicalDevice physicalDevice);
 
@@ -35,7 +37,12 @@ namespace VulkanCookbook {
         static std::optional<VkDevice> createLogicalDevice(VkPhysicalDevice physicalDevice, std::map<QueueType,
                 uint32_t> &queueMap, VkPhysicalDeviceFeatures desiredFeatures, std::vector<char const *> const &desiredExtensions);
 
-        static std::vector<VkQueueFamilyProperties> getQueueFamiliesProperties(VkPhysicalDevice physical_device);
+        static std::vector<VkQueueFamilyProperties> getQueueFamiliesProperties(VkPhysicalDevice physicalDevice);
+
+        static std::optional<uint32_t> getIndexOfQueueWithPresentationSurfaceSupport(
+                std::vector<VkQueueFamilyProperties> &queueFamilies,
+                VkPhysicalDevice physicalDevice,
+                VkSurfaceKHR surface);
 
         void loadDeviceFunctions();
 

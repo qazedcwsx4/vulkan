@@ -32,7 +32,7 @@ namespace VulkanCookbook {
     public:
         ~VulkanInstance();
 
-        VulkanLogicalDevice getLogicalDevice(const std::vector<const char *> &desiredExtensions);
+        VulkanLogicalDevice getLogicalDevice(const std::vector<const char *> &desiredExtensions, VulkanSurface &surface);
 
         VulkanSurface getSurface();
 

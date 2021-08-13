@@ -7,7 +7,8 @@
 
 enum class QueueType {
     GRAPHICS,
-    COMPUTE
+    COMPUTE,
+    PRESENTATION,
 };
 
 #endif //VULKAN_QUEUETYPE_H

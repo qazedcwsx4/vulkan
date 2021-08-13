@@ -70,9 +70,9 @@ namespace VulkanCookbook {
         }
     }
 
-    VulkanLogicalDevice VulkanInstance::getLogicalDevice(const std::vector<const char *> &desiredExtensions) {
+    VulkanLogicalDevice VulkanInstance::getLogicalDevice(const std::vector<const char *> &desiredExtensions, VulkanSurface &surface) {
         std::vector<VkPhysicalDevice> availableDevices = enumeratePhysicalDevices();
-        return VulkanLogicalDevice(availableDevices, desiredExtensions);
+        return VulkanLogicalDevice(availableDevices, desiredExtensions, surface.surface);
     }
 
     std::vector<VkPhysicalDevice> VulkanInstance::enumeratePhysicalDevices() {

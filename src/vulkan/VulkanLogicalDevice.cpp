@@ -5,15 +5,17 @@
 #include "VulkanLogicalDevice.h"
 #include "../VulkanFunctions.h"
 #include <set>
+#include <vector>
 
 namespace VulkanCookbook {
     VulkanLogicalDevice::VulkanLogicalDevice(std::vector<VkPhysicalDevice> &physicalDevices,
-                                             const std::vector<const char *> &desiredExtensions) {
+                                             const std::vector<const char *> &desiredExtensions,
+                                             VkSurfaceKHR surface) {
         bool initialized = false;
         for (auto &physicalDevice : physicalDevices) {
             auto deviceFeatures = obtainDeviceFeatures(physicalDevice);
             if (!deviceFeatures.has_value()) continue;
-            auto queueMap = obtainDeviceQueues(physicalDevice);
+            auto queueMap = obtainDeviceQueues(physicalDevice, surface);
             if (!queueMap.has_value()) continue;
 
             auto device = createLogicalDevice(physicalDevice, queueMap.value(), deviceFeatures.value(), {});
@@ -96,18 +98,22 @@ namespace VulkanCookbook {
         return deviceFeatures;
     }
 
-    std::optional<std::map<QueueType, uint32_t>> VulkanLogicalDevice::obtainDeviceQueues(
-            VkPhysicalDevice physicalDevice) {
+    std::optional<std::map<QueueType, uint32_t>>
+    VulkanLogicalDevice::obtainDeviceQueues(VkPhysicalDevice physicalDevice, VkSurfaceKHR surface) {
 
         auto queueFamiliesProperties = getQueueFamiliesProperties(physicalDevice);
-        auto graphicsQueueIndex = getIndexOfQueueWithDesiredCapabilities(queueFamiliesProperties,
-                                                                         VK_QUEUE_GRAPHICS_BIT);
-        auto computeQueueIndex = getIndexOfQueueWithDesiredCapabilities(queueFamiliesProperties, VK_QUEUE_COMPUTE_BIT);
 
-        if (!graphicsQueueIndex.has_value() || !computeQueueIndex.has_value()) return std::nullopt;
+        auto graphicsQueueIndex = getIndexOfQueueWithDesiredCapabilities(queueFamiliesProperties, VK_QUEUE_GRAPHICS_BIT);
+        auto computeQueueIndex = getIndexOfQueueWithDesiredCapabilities(queueFamiliesProperties, VK_QUEUE_COMPUTE_BIT);
+        auto presentationQueueIndex = getIndexOfQueueWithPresentationSurfaceSupport(queueFamiliesProperties, physicalDevice, surface);
+
+        if (!graphicsQueueIndex.has_value() || !computeQueueIndex.has_value()
+            || !presentationQueueIndex.has_value())
+            return std::nullopt;
 
         return std::map<QueueType, uint32_t>{{QueueType::GRAPHICS, graphicsQueueIndex.value()},
-                                             {QueueType::COMPUTE,  computeQueueIndex.value()}};
+                                             {QueueType::COMPUTE,  computeQueueIndex.value()},
+                                             {QueueType::PRESENTATION, presentationQueueIndex.value()}};
     }
 
     std::optional<uint32_t> VulkanLogicalDevice::getIndexOfQueueWithDesiredCapabilities(
@@ -124,18 +130,36 @@ namespace VulkanCookbook {
         return std::nullopt;
     }
 
+    std::optional<uint32_t> VulkanLogicalDevice::getIndexOfQueueWithPresentationSurfaceSupport(
+            std::vector<VkQueueFamilyProperties> &queueFamilies,
+            VkPhysicalDevice physicalDevice,
+            VkSurfaceKHR surface) {
+
+        for (uint32_t index = 0; index < static_cast<uint32_t>(queueFamilies.size()); ++index) {
+
+            VkBool32 presentationSupported = VK_FALSE;
+            VkResult result = vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice, index, surface, &presentationSupported);
+
+            if (result == VK_SUCCESS && presentationSupported == VK_TRUE) {
+                return index;
+            }
+        }
+
+        return std::nullopt;
+    }
+
     std::vector<VkQueueFamilyProperties>
-    VulkanLogicalDevice::getQueueFamiliesProperties(VkPhysicalDevice physical_device) {
+    VulkanLogicalDevice::getQueueFamiliesProperties(VkPhysicalDevice physicalDevice) {
         uint32_t queueFamiliesCount = 0;
         std::vector<VkQueueFamilyProperties> queueFamilies;
 
-        vkGetPhysicalDeviceQueueFamilyProperties(physical_device, &queueFamiliesCount, nullptr);
+        vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamiliesCount, nullptr);
         if (queueFamiliesCount == 0) {
             throw std::exception("Could not get the number of queue families");
         }
 
         queueFamilies.resize(queueFamiliesCount);
-        vkGetPhysicalDeviceQueueFamilyProperties(physical_device, &queueFamiliesCount, queueFamilies.data());
+        vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamiliesCount, queueFamilies.data());
 
         return queueFamilies;
     }

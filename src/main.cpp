@@ -11,10 +11,8 @@ int main() {
     const std::vector<const char*> extensions = {VK_KHR_SURFACE_EXTENSION_NAME, VK_KHR_WIN32_SURFACE_EXTENSION_NAME};
     auto library = VulkanLibrary();
     auto instance = library.getInstance("XD", extensions);
-    auto device = instance.getLogicalDevice({});
     auto surface = instance.getSurface();
-
-    _sleep(10000);
+    auto device = instance.getLogicalDevice({}, surface);
 
     std::cout << "uwu";
 }
