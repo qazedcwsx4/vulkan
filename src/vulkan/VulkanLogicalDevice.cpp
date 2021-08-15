@@ -13,22 +13,22 @@ namespace VulkanCookbook {
                                              const std::vector<const char *> &desiredExtensions,
                                              VkSurfaceKHR surface) {
         bool initialized = false;
-        for (auto &physicalDevice : physicalDevices) {
-            auto deviceFeatures = obtainDeviceFeatures(physicalDevice);
+        for (auto &physicalDeviceCandidate : physicalDevices) {
+            auto deviceFeatures = obtainDeviceFeatures(physicalDeviceCandidate);
             if (!deviceFeatures.has_value()) continue;
-            auto queueMap = obtainDeviceQueues(physicalDevice, surface);
-            if (!queueMap.has_value()) continue;
+            auto queuesCandidate = obtainDeviceQueues(physicalDeviceCandidate, surface);
+            if (!queuesCandidate.has_value()) continue;
 
-            auto device = createLogicalDevice(physicalDevice, queueMap.value(), deviceFeatures.value(), desiredExtensions);
-            if (!device.has_value()) continue;
+            auto deviceCandidate = createLogicalDevice(physicalDeviceCandidate, queuesCandidate.value(), deviceFeatures.value(), desiredExtensions);
+            if (!deviceCandidate.has_value()) continue;
 
-            VulkanDeviceExtensions extensions(physicalDevice, device.value());
-            if (!extensions.areExtensionsSupported(desiredExtensions)) continue;
+            VulkanDeviceExtensions extensionsCandidate(physicalDeviceCandidate, deviceCandidate.value());
+            if (!extensionsCandidate.areExtensionsSupported(desiredExtensions)) continue;
 
-            VkDevice deviceValue = device.value();
-            this->device = deviceValue;
-            this->queues = std::move(queueMap.value());
-            this->extensions = std::move(extensions);
+            this->physicalDevice = physicalDeviceCandidate;
+            this->device = deviceCandidate.value();
+            this->queues = std::move(queuesCandidate.value());
+            this->extensions = std::move(extensionsCandidate);
             initialized = true;
             break;
         }

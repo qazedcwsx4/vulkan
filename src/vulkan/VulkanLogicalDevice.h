@@ -16,6 +16,8 @@
 namespace VulkanCookbook {
     class VulkanLogicalDevice {
     private:
+        VkPhysicalDevice physicalDevice;
+
         VkDevice device;
 
         std::map<QueueType, uint32_t> queues;
