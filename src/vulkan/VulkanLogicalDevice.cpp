@@ -5,6 +5,7 @@
 #include "VulkanLogicalDevice.h"
 #include "../VulkanFunctions.h"
 #include <set>
+#include <iostream>
 #include <vector>
 
 namespace VulkanCookbook {
@@ -18,7 +19,7 @@ namespace VulkanCookbook {
             auto queueMap = obtainDeviceQueues(physicalDevice, surface);
             if (!queueMap.has_value()) continue;
 
-            auto device = createLogicalDevice(physicalDevice, queueMap.value(), deviceFeatures.value(), {});
+            auto device = createLogicalDevice(physicalDevice, queueMap.value(), deviceFeatures.value(), desiredExtensions);
             if (!device.has_value()) continue;
 
             VulkanDeviceExtensions extensions(physicalDevice, device.value());

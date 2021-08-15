@@ -12,7 +12,7 @@ int main() {
     auto library = VulkanLibrary();
     auto instance = library.getInstance("XD", extensions);
     auto surface = instance.getSurface();
-    auto device = instance.getLogicalDevice({}, surface);
+    auto device = instance.getLogicalDevice({VK_KHR_SWAPCHAIN_EXTENSION_NAME}, surface);
 
     std::cout << "uwu";
 }
