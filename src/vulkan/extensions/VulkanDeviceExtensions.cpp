@@ -5,6 +5,7 @@
 #include <vector>
 #include "VulkanDeviceExtensions.h"
 #include "../../VulkanFunctions.h"
+#include "../doubleCall.h"
 
 namespace VulkanCookbook {
     VulkanDeviceExtensions::VulkanDeviceExtensions(VkPhysicalDevice physicalDevice, VkDevice device) :
@@ -13,22 +14,7 @@ namespace VulkanCookbook {
     }
 
     std::vector<VkExtensionProperties> VulkanDeviceExtensions::getDeviceExtensions() {
-        uint32_t extensionsCount = 0;
-        std::vector<VkExtensionProperties> availableExtensions;
-
-        VkResult result = vkEnumerateDeviceExtensionProperties(physicalDevice, nullptr, &extensionsCount, nullptr);
-        if (result != VK_SUCCESS || extensionsCount == 0) {
-            throw std::exception("Could not get the number of device extensions");
-        }
-
-        availableExtensions.resize(extensionsCount);
-        result = vkEnumerateDeviceExtensionProperties(physicalDevice, nullptr, &extensionsCount,
-                                                      availableExtensions.data());
-        if (result != VK_SUCCESS || extensionsCount == 0) {
-            throw std::exception("Could not enumerate device availableExtensions");
-        }
-
-        return availableExtensions;
+        return doubleCall<VkExtensionProperties>(vkEnumerateDeviceExtensionProperties, physicalDevice, nullptr);
     }
 
     void VulkanDeviceExtensions::loadExtensionFunctions(const std::vector<const char *> &enabledExtensions) {

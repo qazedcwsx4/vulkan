@@ -4,6 +4,7 @@
 
 #include "VulkanInstanceExtensions.h"
 #include "../../VulkanFunctions.h"
+#include "../doubleCall.h"
 
 namespace VulkanCookbook {
     VulkanInstanceExtensions::VulkanInstanceExtensions(VkInstance instance) : instance(instance) {
@@ -11,22 +12,7 @@ namespace VulkanCookbook {
     }
 
     std::vector<VkExtensionProperties> VulkanInstanceExtensions::getInstanceExtensions() {
-        uint32_t extensions_count = 0;
-
-        VkResult result = vkEnumerateInstanceExtensionProperties(nullptr, &extensions_count, nullptr);
-        if (result != VK_SUCCESS || extensions_count == 0) {
-            throw std::exception("Could not get the number of instance extensions");
-        }
-
-        std::vector<VkExtensionProperties> extensions;
-        extensions.resize(extensions_count);
-
-        result = vkEnumerateInstanceExtensionProperties(nullptr, &extensions_count, extensions.data());
-        if (result != VK_SUCCESS || extensions_count == 0) {
-            throw std::exception("Could not enumerate instance extensions");
-        }
-
-        return extensions;
+        return doubleCall<VkExtensionProperties>(vkEnumerateInstanceExtensionProperties, nullptr);
     }
 
     void VulkanInstanceExtensions::loadExtensionFunctions(const std::vector<const char *> &enabledExtensions) {

@@ -4,6 +4,7 @@
 
 #include "VulkanLogicalDevice.h"
 #include "../VulkanFunctions.h"
+#include "doubleCall.h"
 #include <set>
 #include <iostream>
 #include <vector>
@@ -151,18 +152,7 @@ namespace VulkanCookbook {
 
     std::vector<VkQueueFamilyProperties>
     VulkanLogicalDevice::getQueueFamiliesProperties(VkPhysicalDevice physicalDevice) {
-        uint32_t queueFamiliesCount = 0;
-        std::vector<VkQueueFamilyProperties> queueFamilies;
-
-        vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamiliesCount, nullptr);
-        if (queueFamiliesCount == 0) {
-            throw std::exception("Could not get the number of queue families");
-        }
-
-        queueFamilies.resize(queueFamiliesCount);
-        vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamiliesCount, queueFamilies.data());
-
-        return queueFamilies;
+        return doubleCall<VkQueueFamilyProperties>(vkGetPhysicalDeviceQueueFamilyProperties, physicalDevice);
     }
 
     void VulkanLogicalDevice::loadDeviceFunctions() {

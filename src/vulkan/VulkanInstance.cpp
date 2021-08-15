@@ -5,6 +5,7 @@
 #include <vector>
 #include "VulkanInstance.h"
 #include "../VulkanFunctions.h"
+#include "doubleCall.h"
 
 namespace VulkanCookbook {
 
@@ -76,20 +77,7 @@ namespace VulkanCookbook {
     }
 
     std::vector<VkPhysicalDevice> VulkanInstance::enumeratePhysicalDevices() {
-        uint32_t devicesCount = 0;
-        std::vector<VkPhysicalDevice> availableDevices;
-
-        VkResult result = vkEnumeratePhysicalDevices(instance, &devicesCount, nullptr);
-        if (result != VK_SUCCESS || devicesCount == 0) {
-            throw std::exception("Could not get the number of available physical devices");
-        }
-
-        availableDevices.resize(devicesCount);
-        result = vkEnumeratePhysicalDevices(instance, &devicesCount, availableDevices.data());
-        if (result != VK_SUCCESS || devicesCount == 0) {
-            throw std::exception("Could not enumerate physical devices");
-        }
-        return availableDevices;
+        return doubleCall<VkPhysicalDevice>(vkEnumeratePhysicalDevices, instance);
     }
 
     VulkanSurface VulkanInstance::getSurface() {
