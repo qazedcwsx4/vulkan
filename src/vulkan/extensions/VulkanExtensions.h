@@ -9,7 +9,7 @@
 #include <vulkan.h>
 #include <string>
 
-namespace VulkanCookbook {
+namespace Vulkan {
     class VulkanExtensions {
     protected:
         std::vector<VkExtensionProperties> availableExtensions;

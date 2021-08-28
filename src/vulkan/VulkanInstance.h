@@ -13,7 +13,7 @@
 #include "extensions/VulkanInstanceExtensions.h"
 #include "VulkanSurface.h"
 
-namespace VulkanCookbook {
+namespace Vulkan {
     class VulkanInstance {
     private:
         VkInstance instance;

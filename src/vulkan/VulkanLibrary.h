@@ -13,7 +13,7 @@
 #include <vector>
 #include <string>
 
-namespace VulkanCookbook {
+namespace Vulkan {
     class VulkanLibrary {
     private:
         LIBRARY_TYPE vulkanLibrary;

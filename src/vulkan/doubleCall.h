@@ -8,7 +8,7 @@
 #include <vector>
 #include <functional>
 
-namespace VulkanCookbook {
+namespace Vulkan {
     template<typename T, typename ... Args1, typename ... Args2>
     std::vector<T> doubleCall(void (*fun)(Args1 ...), Args2 ... args) {
         uint32_t size = 0;

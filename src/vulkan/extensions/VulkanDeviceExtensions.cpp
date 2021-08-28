@@ -7,7 +7,7 @@
 #include "../../VulkanFunctions.h"
 #include "../doubleCall.h"
 
-namespace VulkanCookbook {
+namespace Vulkan {
     VulkanDeviceExtensions::VulkanDeviceExtensions(VkPhysicalDevice physicalDevice, VkDevice device) :
             physicalDevice(physicalDevice), device(device) {
         availableExtensions = std::move(getDeviceExtensions());

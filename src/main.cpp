@@ -5,7 +5,7 @@
 #include "vulkan/VulkanLibrary.h"
 #include "VulkanFunctions.h"
 
-using namespace VulkanCookbook;
+using namespace Vulkan;
 
 int main() {
     try {

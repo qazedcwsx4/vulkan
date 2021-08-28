@@ -7,7 +7,7 @@
 
 #include "VulkanExtensions.h"
 
-namespace VulkanCookbook {
+namespace Vulkan {
     class VulkanInstanceExtensions : public VulkanExtensions {
     private:
         VkInstance instance;

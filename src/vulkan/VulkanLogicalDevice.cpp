@@ -9,7 +9,7 @@
 #include <iostream>
 #include <vector>
 
-namespace VulkanCookbook {
+namespace Vulkan {
     VulkanLogicalDevice::VulkanLogicalDevice(std::vector<VkPhysicalDevice> &physicalDevices,
                                              const std::vector<const char *> &desiredExtensions,
                                              VkSurfaceKHR surface) {

@@ -6,7 +6,7 @@
 #include "VulkanLibrary.h"
 #include "../VulkanFunctions.h"
 
-namespace VulkanCookbook {
+namespace Vulkan {
     VulkanLibrary::VulkanLibrary() {
 #if defined _WIN32
         vulkanLibrary = LoadLibrary("vulkan-1.dll");

@@ -7,7 +7,7 @@
 
 #include <vulkan.h>
 
-namespace VulkanCookbook {
+namespace Vulkan {
     class VulkanSurface {
     private:
         explicit VulkanSurface(VkInstance instance);

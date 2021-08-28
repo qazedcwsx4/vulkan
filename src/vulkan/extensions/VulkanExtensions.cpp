@@ -7,7 +7,7 @@
 #include <algorithm>
 #include "../../VulkanFunctions.h"
 
-namespace VulkanCookbook {
+namespace Vulkan {
     bool VulkanExtensions::isExtensionSupported(const char *const extension) {
         for (auto &available_extension : availableExtensions) {
             if (strstr(available_extension.extensionName, extension)) {

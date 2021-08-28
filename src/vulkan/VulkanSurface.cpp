@@ -7,7 +7,7 @@
 #include <Windows.h>
 #include <exception>
 
-namespace VulkanCookbook {
+namespace Vulkan {
     namespace {
         enum UserMessage {
             USER_MESSAGE_RESIZE = WM_USER + 1,
@@ -101,7 +101,7 @@ namespace VulkanCookbook {
     }
 
     HWND VulkanSurface::createWindow() {
-        HWND window = CreateWindow(CLASS_NAME, "VulkanCookbook", WS_OVERLAPPEDWINDOW, 0, 0, 1280, 720, nullptr,
+        HWND window = CreateWindow(CLASS_NAME, "Vulkan", WS_OVERLAPPEDWINDOW, 0, 0, 1280, 720, nullptr,
                                    nullptr, windowInstance, nullptr);
 
         if (!window) {

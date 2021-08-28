@@ -13,7 +13,7 @@
 #include "QueueType.h"
 #include "extensions/VulkanDeviceExtensions.h"
 
-namespace VulkanCookbook {
+namespace Vulkan {
     class VulkanLogicalDevice {
     private:
         VkPhysicalDevice physicalDevice;

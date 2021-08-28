@@ -8,7 +8,7 @@
 #include <vector>
 #include "VulkanExtensions.h"
 
-namespace VulkanCookbook {
+namespace Vulkan {
     class VulkanDeviceExtensions : public VulkanExtensions {
     private:
         VkPhysicalDevice physicalDevice;

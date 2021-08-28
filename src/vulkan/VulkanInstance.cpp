@@ -7,7 +7,7 @@
 #include "../VulkanFunctions.h"
 #include "doubleCall.h"
 
-namespace VulkanCookbook {
+namespace Vulkan {
 
     VulkanInstance::VulkanInstance(const char *applicationName, std::vector<char const *> const &desiredExtensions) :
             instance(createInstance(applicationName, desiredExtensions)),

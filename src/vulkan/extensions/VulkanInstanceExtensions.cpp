@@ -6,7 +6,7 @@
 #include "../../VulkanFunctions.h"
 #include "../doubleCall.h"
 
-namespace VulkanCookbook {
+namespace Vulkan {
     VulkanInstanceExtensions::VulkanInstanceExtensions(VkInstance instance) : instance(instance) {
         availableExtensions = std::move(getInstanceExtensions());
     }
