@@ -48,6 +48,12 @@ namespace Vulkan {
 
         void loadDeviceFunctions();
 
+        VkPresentModeKHR determinePresentationMode(VkPresentModeKHR presentMode, VkSurfaceKHR surface);
+
+        VkSurfaceCapabilitiesKHR getSurfaceCapabilities(VkSurfaceKHR surface);
+
+        std::vector<VkSurfaceFormatKHR> getSurfaceFormats(VkSurfaceKHR surface);
+
     public:
         ~VulkanLogicalDevice();
 

@@ -5,6 +5,7 @@
 #include "VulkanLogicalDevice.h"
 #include "../VulkanFunctions.h"
 #include "doubleCall.h"
+#include "VulkanSurface.h"
 #include <set>
 #include <iostream>
 #include <vector>
@@ -33,7 +34,7 @@ namespace Vulkan {
             initialized = true;
             break;
         }
-        if (!initialized) throw std::exception("Could not find suitable createdDevice");
+        if (!initialized) throw std::exception("Could not find suitable device");
 
         loadDeviceFunctions();
         extensions.loadExtensionFunctions(desiredExtensions);
@@ -163,6 +164,28 @@ namespace Vulkan {
         }
 
 #include "../ListOfVulkanFunctions.inl"
+    }
+
+    VkPresentModeKHR VulkanLogicalDevice::determinePresentationMode(VkPresentModeKHR presentMode, VkSurfaceKHR surface) {
+        std::vector availableModes = std::move(doubleCall<VkPresentModeKHR>(vkGetPhysicalDeviceSurfacePresentModesKHR, physicalDevice, surface));
+        if (std::find(availableModes.cbegin(), availableModes.cend(), presentMode) != availableModes.cend()) {
+            return presentMode;
+        } else {
+            return VK_PRESENT_MODE_FIFO_KHR;
+        }
+    }
+
+    VkSurfaceCapabilitiesKHR VulkanLogicalDevice::getSurfaceCapabilities(VkSurfaceKHR surface) {
+        VkSurfaceCapabilitiesKHR surfaceCapabilities;
+        if (vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice, surface, &surfaceCapabilities)!= VK_SUCCESS){
+            throw std::exception("Could not obtain surface capabilities");
+        }
+
+        return surfaceCapabilities;
+    }
+
+    std::vector<VkSurfaceFormatKHR> VulkanLogicalDevice::getSurfaceFormats(VkSurfaceKHR surface) {
+        return std::move(doubleCall<VkSurfaceFormatKHR>(vkGetPhysicalDeviceSurfaceFormatsKHR, physicalDevice, surface));
     }
 
     VulkanLogicalDevice::~VulkanLogicalDevice() {
